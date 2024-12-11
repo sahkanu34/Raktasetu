@@ -1,0 +1,184 @@
+{% load static %}
+{% if user.user_type == '1' %}
+<div class="sidebar" data-background-color="dark">
+    <div class="sidebar-logo">
+      <!-- Logo Header -->
+      <div class="logo-header" data-background-color="dark">
+        <a href="{% url 'dashboard' %}" class="logo">
+          <h3 style="color: white;">Raktasetu</h3>
+         </a>
+        <div class="nav-toggle">
+          <button class="btn btn-toggle toggle-sidebar">
+            <i class="gg-menu-right"></i>
+          </button>
+          <button class="btn btn-toggle sidenav-toggler">
+            <i class="gg-menu-left"></i>
+          </button>
+        </div>
+        <button class="topbar-toggler more">
+          <i class="gg-more-vertical-alt"></i>
+        </button>
+      </div>
+      <!-- End Logo Header -->
+    </div>
+    <div class="sidebar-wrapper scrollbar scrollbar-inner">
+      <div class="sidebar-content">
+        <ul class="nav nav-secondary">
+          <li class="nav-item active">
+            <a
+              
+              href="{% url 'dashboard' %}"
+              class="collapsed"
+              aria-expanded="false"
+            >
+              <i class="fas fa-home"></i>
+              <p>Dashboard</p>
+             
+            </a>
+        
+          </li>
+          <li class="nav-section">
+            <span class="sidebar-mini-icon">
+              <i class="fa fa-ellipsis-h"></i>
+            </span>
+            <h4 class="text-section">Components</h4>
+          </li>
+          <li class="nav-item">
+            <a data-bs-toggle="collapse" href="#base">
+              <i class="fas fa-layer-group"></i>
+              <p>Blood Group</p>
+              <span class="caret"></span>
+            </a>
+            <div class="collapse" id="base">
+              <ul class="nav nav-collapse">
+                <li>
+                  <a href="{% url 'add_bloodgroup' %}">
+                    <span class="sub-item">Add Blood Group</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'manage_bloodgroup' %}">
+                    <span class="sub-item">Manage Blood Group</span>
+                  </a>
+                </li>
+              
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'view_donor_list' %}">
+              <i class="fas fa-user"></i>
+              <p>Donors List</p>
+             
+            </a>
+        
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'view_contactus_query' %}">
+              <i class="fas fa-phone"></i>
+              <p>Manage Contact us query</p>
+             
+            </a>
+        
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'blood-request' %}">
+              <i class="fas fa-envelope"></i>
+              <p>Blood Request</p>
+             
+            </a>
+        
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'br_between_date_report' %}">
+              <i class="fas fa-file"></i>
+              <p>Blood Request Report</p>
+             
+            </a>
+        
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {% else  %}
+
+  <div class="sidebar" data-background-color="dark">
+    <div class="sidebar-logo">
+      <!-- Logo Header -->
+      <div class="logo-header" data-background-color="dark">
+        <a href="{% url 'dashboard' %}" class="logo">
+         <h3 style="color: white;">Raktasetu</h3>
+        </a>
+        <div class="nav-toggle">
+          <button class="btn btn-toggle toggle-sidebar">
+            <i class="gg-menu-right"></i>
+          </button>
+          <button class="btn btn-toggle sidenav-toggler">
+            <i class="gg-menu-left"></i>
+          </button>
+        </div>
+        <button class="topbar-toggler more">
+          <i class="gg-more-vertical-alt"></i>
+        </button>
+      </div>
+      <!-- End Logo Header -->
+    </div>
+    <div class="sidebar-wrapper scrollbar scrollbar-inner">
+      <div class="sidebar-content">
+        <ul class="nav nav-secondary">
+          <li class="nav-item active">
+            <a
+              
+              href="{% url 'dashboard' %}"
+              class="collapsed"
+              aria-expanded="false"
+            >
+              <i class="fas fa-home"></i>
+              <p>Dashboard</p>
+             
+            </a>
+        
+          </li>
+        
+         
+          <li class="nav-item">
+            <a href="{% url 'blood_request' %}">
+              <i class="fas fa-envelope"></i>
+              <p>View Request</p>
+            
+            </a>
+         
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'donor-profile' %}">
+              <i class="fas fa-user"></i>
+              <p>Profile</p>
+            
+            </a>
+         
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'change_password' %}">
+              <i class="fas fa-key"></i>
+              <p>Change Password</p>
+            
+            </a>
+         
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'logout' %}">
+            <i class="fas fa-sign-out-alt" ></i>
+              <p>Logout</p>
+            
+            </a>
+         
+          </li>
+      
+        
+  
+        </ul>
+      </div>
+    </div>
+  </div>{% endif %}

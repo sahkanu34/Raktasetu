@@ -1,0 +1,31 @@
+{% extends 'userbase.html' %}
+{% load static %}
+
+{% block content %}
+<section class="about_section layout_padding">
+    <div class="container  ">
+      <div class="row">
+        <div class="col-md-6 ">
+          <div class="img-box">
+            <img src="{% static 'assets1/images/about-img.jpg'%}" height="300" width="200" alt="">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="detail-box">
+            <div class="heading_container">
+              <h2>
+                About <span>Us</span>
+              </h2>
+            </div>
+            <p>
+            In Ghadiarwa-10, we are dedicated to saving lives through our Blood Bank Management System. We connect generous donors with patients in need, ensuring every drop counts. Our platform streamlines the donation process, making it easier to track and manage blood supplies.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+{% endblock %}

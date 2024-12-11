@@ -1,0 +1,55 @@
+{% extends 'userbase.html' %}
+{% load static %}
+
+{% block content %}
+<section class="contact_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Contact For Blood
+         
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+            <p>Fill Following form for Blood</p>
+          <div class="form_container contact-form">
+           
+            <form action="{% url 'blood-request-details' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="donor_id" value="{{donview.id}}" required="true"/>
+              <div class="form-row">
+                <div class="col-lg-6">
+                  <div>
+                    <input type="text" placeholder="Your Name" name="fullname" required="true"/>
+                  
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div>
+                    <input type="text" placeholder="Phone Number" name="mobno" required="true" maxlength="10" pattern="[0-9]+"/>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <input type="email" placeholder="Email" name="email" required="true" />
+              </div>
+              <div>
+                <input type="text" placeholder="Blood Required For" name="requirer"/>
+              </div>
+              <div>
+                <input type="text" class="message-box" placeholder="Message" name="message"/>
+              </div>
+              <div class="btn_box">
+                <button>
+                  SEND
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+{% endblock %}

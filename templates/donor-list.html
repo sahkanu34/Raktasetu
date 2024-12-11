@@ -1,0 +1,68 @@
+{% extends 'userbase.html' %}
+{% load static %}
+
+{% block content %}
+
+
+  <section class="doctor_section layout_padding">
+    <div class="container">
+      <div class="heading_container heading_center">
+        <h2>
+          Our Donor List
+        </h2>
+        <p class="col-md-10 mx-auto px-0">
+           
+        </p>
+      </div>
+      {% if messages %}
+      {% for message in messages %}
+       {% if message.tags == 'error' %}
+     <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+    {{message}}
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+   <span aria-hidden="true">&times;</span>
+       </button>
+        </div>
+     {% endif %}
+      {% endfor %}
+     {% endif %}
+         {% if messages %}
+      {% for message in messages %}
+       {% if message.tags == 'success' %}
+     <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+    {{message}}
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+   <span aria-hidden="true">&times;</span>
+       </button>
+        </div>
+     {% endif %}
+      {% endfor %}
+     {% endif %}
+      <div class="row">
+        {% for i in dv %}
+        <div class="col-sm-6 col-lg-4 mx-auto">
+          <div class="box">
+            <div class="img-box">
+              <img src="{{i.admin.profile_pic.url}}" width="200" height="300" alt="">
+            </div>
+            <div class="detail-box">
+
+              <h5>
+                {{i.admin.first_name}} {{i.admin.last_name}}
+              </h5>
+              <p>Gender: {{i.gender}}</p>
+            <p>Blood Group: {{i.bloodgroup.bloodgroup}}</p>
+            <h6 class="">
+              <a href="{% url 'blood-request' i.id %}" class="btn btn-primary">Request</a>
+            </h6>
+            </div>
+          </div>
+        </div>{% endfor %}
+       
+       
+      </div>
+      
+    </div>
+  </section>
+
+{% endblock %}

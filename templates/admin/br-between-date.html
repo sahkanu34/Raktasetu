@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-inner">
+    <div class="page-header">
+      <h3 class="fw-bold mb-3">Blood Request B/W Dates Reports</h3>
+      <ul class="breadcrumbs mb-3">
+        <li class="nav-home">
+          <a href="#">
+            <i class="icon-home"></i>
+          </a>
+        </li>
+        <li class="separator">
+          <i class="icon-arrow-right"></i>
+        </li>
+        <li class="nav-item">
+          Blood Request B/W Dates Reports
+        </li>
+      
+        
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Blood Request Details</h4>
+          </div>
+          <form method="get" action="" enctype="multipart/form-data" action="{% url 'br_between_date_report' %}">
+            {% csrf_token %}
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">From Date</label>
+                <div class="col-sm-10">
+                    <input type="date" id="query" name="start_date" class="form-control" required="">
+                </div>
+            </div>
+             <div class="form-group row">
+                <label class="col-sm-2 col-form-label">To Date</label>
+                <div class="col-sm-10">
+                    <input type="date" id="query" name="end_date" class="form-control" required="">
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-dark">Submit</button>
+                </div>
+            </div>
+        </form>
+          <div class="card-body">
+            {% if messages %}
+        {% for message in messages %}
+         {% if message.tags == 'error' %}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{message}}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+         </button>
+          </div>
+       {% endif %}
+        {% endfor %}
+       {% endif %}
+           {% if messages %}
+        {% for message in messages %}
+         {% if message.tags == 'success' %}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{message}}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+         </button>
+          </div>
+       {% endif %}
+        {% endfor %}
+       {% endif %}
+            <div class="table-responsive">
+              
+              <table
+                id="basic-datatables"
+                class="display table table-striped table-hover"
+              >
+              {% if bloodreq %}
+              <p style="font-size: 20px;color: blue;text-align: center;">Data Between: "{{ start_date }} to {{ end_date }}"</p>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name of Donor</th>
+                        <th>Contact Number of Donor</th>
+                        <th>Blood Group of Donor</th>
+                        <th>Name of Requirer</th>
+                        <th>Mobile Number of Requirer</th>
+                        <th>Email of Requirer</th>
+                        <th>Blood Require For</th>
+                        <th>Message of Requirer</th>
+                         <th>Apply Date</th>
+                        
+                        </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Name of Donor</th>
+                        <th>Contact Number of Donor</th>
+                        <th>Blood Group of Donor</th>
+                        <th>Name of Requirer</th>
+                        <th>Mobile Number of Requirer</th>
+                        <th>Email of Requirer</th>
+                        <th>Blood Require For</th>
+                        <th>Message of Requirer</th>
+                        <th>Apply Date</th>
+                        
+                        </tr>
+                </tfoot>
+                <tbody>
+                    
+                    {% for i in bloodreq %}
+                  <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.donid.admin.first_name}} {{i.donid.admin.last_name}}</td>
+                    <td>{{i.donid.mobilenumber}}</td>
+                    <td>{{i.donid.bloodgroup.bloodgroup}}</td>
+                    <td>{{i.fullname}}</td>
+                    <td>{{i.mobno}}</td>
+                    <td>{{i.email}}</td>
+                    <td>{{i.requirer}}</td>
+                    <td>{{i.message}}</td>
+                    <td>{{i.regdate_at}}
+                       </td>
+                
+                  </tr>{% endfor %}
+                  
+                  
+                </tbody>{% endif %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     
+
+     
+    </div>
+  </div>
+
+
+
+{% endblock %}

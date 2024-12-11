@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-inner">
+    <div class="page-header">
+      <h3 class="fw-bold mb-3">View Profile</h3>
+     
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Profile</div>
+          </div>
+          <div class="card-body">
+            {% if messages %}
+            {% for message in messages %}
+             {% if message.tags == 'error' %}
+           <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+          {{message}}
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+         <span aria-hidden="true">&times;</span>
+             </button>
+              </div>
+           {% endif %}
+            {% endfor %}
+           {% endif %}
+               {% if messages %}
+            {% for message in messages %}
+             {% if message.tags == 'success' %}
+           <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+          {{message}}
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+         <span aria-hidden="true">&times;</span>
+             </button>
+              </div>
+           {% endif %}
+            {% endfor %}
+           {% endif %}
+            <form method="POST" action="{% url 'donor-profile_update' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 col-lg-8">
+              
+            
+                <div class="form-group has-success">
+                    <label for="successInput">Old Profile Pic</label>
+                    <img src="{{user.profile_pic}}" width="100" height="100">
+                  </div>
+                <div class="form-group has-success">
+                  <label for="successInput">Profile Pic</label>
+                  <input type="file" class="form-control" name="profile_pic">
+                </div>
+                
+               
+                <div class="form-group has-success">
+                    <label for="successInput">First Name</label>
+                    <input type="text" class="form-control" name="first_name" value="{{donor.admin.first_name}}">
+                  </div>
+                  
+                  <div class="form-group has-success">
+                    <label for="successInput">Last Name</label>
+                    <input type="text" class="form-control" name="last_name" value="{{donor.admin.last_name}}">
+                  </div>
+                  <div class="form-group has-success">
+                    <label for="successInput">Email</label>
+                    <input type="email" class="form-control" readonly="True" name="email" value="{{donor.admin.email}}">
+                  </div>
+                  <div class="form-group has-success">
+                    <label for="successInput">Username</label>
+                    <input type="text" class="form-control" readonly="True" name="username" value="{{donor.admin.username}}">
+                  </div>
+                  <div class="form-group has-success">
+                    <label for="successInput">Age</label>
+                    <input type="text" class="form-control"  name="age" value="{{donor.age}}">
+                  </div>
+                  <div class="form-group has-success">
+                    <label for="successInput">Mobile Number</label>
+                    <input type="text" class="form-control"  name="mobilenumber" value="{{donor.mobilenumber}}">
+                  </div>
+                  <div class="form-group has-success">
+                    <label for="successInput">Blood Group</label>
+                   
+                    <select class="form-control"  name="bloodgroup">
+                        <option value="{{donor.bloodgroup.id}}">{{donor.bloodgroup.bloodgroup}}</option>
+                        {% for i in bg %}
+       
+                                  <option value="{{i.id}}">{{i.bloodgroup}}</option>{% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group has-success">
+                    <label for="successInput">Gender</label>
+                    <input type="text" class="form-control"  name="gender" value="{{donor.gender}}">
+                  </div>
+                  <div class="form-group has-success">
+                    <label for="successInput">Address</label>
+                    <textarea type="text" class="form-control"  name="address">{{donor.address}}</textarea>
+                  </div>
+              </div>
+          
+          
+            </div>
+          </div>
+          <div class="card-action">
+            <button type="submit" class="btn btn-success">Update</button>
+           
+          </div></form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}

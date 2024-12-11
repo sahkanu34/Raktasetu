@@ -1,0 +1,73 @@
+{% extends 'userbase.html' %}
+{% load static %}
+
+{% block content %}
+<section class="contact_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Get In Touch
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form_container contact-form">
+            {% if messages %}
+        {% for message in messages %}
+         {% if message.tags == 'error' %}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+      {{message}}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+     <span aria-hidden="true">&times;</span>
+         </button>
+          </div>
+       {% endif %}
+        {% endfor %}
+       {% endif %}
+           {% if messages %}
+        {% for message in messages %}
+         {% if message.tags == 'success' %}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+      {{message}}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+     <span aria-hidden="true">&times;</span>
+         </button>
+          </div>
+       {% endif %}
+        {% endfor %}
+       {% endif %}
+            <form action="" method="POST">
+              {% csrf_token %}
+              <div class="form-row">
+                <div class="col-lg-6">
+                  <div>
+                    <input type="text" placeholder="Your Name"  name="fullname" required="true"/>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div>
+                    <input type="text" placeholder="Phone Number" name="mobno" required="true"/>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <input type="email" placeholder="Email" name="email" required="true"/>
+              </div>
+              <div>
+                <input type="text" class="message-box" placeholder="Message" name="message" required="true"/>
+              </div>
+              <div class="btn_box">
+                <button>
+                  SEND
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+{% endblock %}

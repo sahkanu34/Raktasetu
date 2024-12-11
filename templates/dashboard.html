@@ -1,0 +1,131 @@
+{% extends 'base.html' %} {% block content %} {% if user.user_type == '1' %}
+<div class="page-inner">
+  <div
+    class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+  >
+    <div>
+      <h3 class="fw-bold mb-3">Dashboard</h3>
+      <h6 class="op-7 mb-2">
+        Welcome!! {{user.first_name}} {{user.last_name}}
+      </h6>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-4">
+      <div class="card card-stats card-round">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-icon">
+              <div
+                class="icon-big text-center icon-primary bubble-shadow-small"
+              >
+                <i class="fas fa-list"></i>
+              </div>
+            </div>
+            <div class="col col-stats ms-3 ms-sm-0">
+              <div class="numbers">
+                <p class="card-category">Listed Blood Group</p>
+                <h4 class="card-title">{{bg_count}}</h4>
+                <a href="{% url 'manage_bloodgroup' %}">View Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="card card-stats card-round">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-icon">
+              <div class="icon-big text-center icon-info bubble-shadow-small">
+                <i class="fas fa-user-check"></i>
+              </div>
+            </div>
+            <div class="col col-stats ms-3 ms-sm-0">
+              <div class="numbers">
+                <p class="card-category">Registered Donors</p>
+                <h4 class="card-title">{{donor_count}}</h4>
+                <a href="{% url 'view_donor_list' %}">View Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="card card-stats card-round">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-icon">
+              <div
+                class="icon-big text-center icon-success bubble-shadow-small"
+              >
+                <i class="fas fa-question"></i>
+              </div>
+            </div>
+            <div class="col col-stats ms-3 ms-sm-0">
+              <div class="numbers">
+                <p class="card-category">Total Queries</p>
+                <h4 class="card-title">{{contact_count}}</h4>
+                <a href="{% url 'view_contactus_query' %}">View Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <div class="card card-stats card-round">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-icon">
+              <div
+                class="icon-big text-center icon-secondary bubble-shadow-small"
+              >
+                <i class="far fa-envelope"></i>
+              </div>
+            </div>
+            <div class="col col-stats ms-3 ms-sm-0">
+              <div class="numbers">
+                <p class="card-category">Total Blood Request</p>
+                <h4 class="card-title">{{br_count}}</h4>
+                <a href="{% url 'blood-request' %}">View Details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+
+<div class="page-inner">
+  <div
+    class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4"
+  >
+    <div>
+      <h4 class="fw-bold mb-3">"Welcome to our community of lifesavers!"</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-12">
+      <div class="card card-stats card-round">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col col-stats ms-3 ms-sm-0">
+              <div class="numbers">
+                <h4 style="text-align: center">
+                  Namaste !!🙇‍♂️ {{user.first_name}} {{user.last_name}}
+                </h4>
+                <a href="{% url 'blood_request' %}">View Request</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %} {% endblock %}

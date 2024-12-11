@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-inner">
+    <div class="page-header">
+      <h3 class="fw-bold mb-3">Edit Blood Group</h3>
+     
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Edit Blood Group</div>
+          </div>
+          <div class="card-body">
+            {% if messages %}
+            {% for message in messages %}
+             {% if message.tags == 'error' %}
+           <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+          {{message}}
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+         <span aria-hidden="true">&times;</span>
+             </button>
+              </div>
+           {% endif %}
+            {% endfor %}
+           {% endif %}
+               {% if messages %}
+            {% for message in messages %}
+             {% if message.tags == 'success' %}
+           <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+          {{message}}
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+         <span aria-hidden="true">&times;</span>
+             </button>
+              </div>
+           {% endif %}
+            {% endfor %}
+           {% endif %}
+            <form method="POST" action="{% url 'update_bloodgroup_details' %}">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 col-lg-8">
+              
+            
+             
+                <div class="form-group has-success">
+                  <label for="successInput">Blood Group</label>
+                  <input id="bloodgroup" type="text"  class="form-control" name="bloodgroup"  required="true" value="{{bloodgrp.bloodgroup}}">
+                  <input type="hidden" name="bg_id" class="form-control" id="bg_id" required="true" value="{{bloodgrp.id}}">
+                </div>
+               
+
+              </div>
+          
+          
+            </div>
+          </div>
+          <div class="card-action">
+            <button type="submit" class="btn btn-success">Edit</button>
+           
+          </div></form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}

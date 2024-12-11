@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>BBDMS - Login</title>
+  <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+
+  <!-- Fonts and icons -->
+  <script src="{% static 'assets/js/plugin/webfont/webfont.min.js' %}"></script>
+  <script>
+    WebFont.load({
+      google: { families: ["Public Sans:300,400,500,600,700"] },
+      custom: {
+        families: [
+          "Font Awesome 5 Solid",
+          "Font Awesome 5 Regular",
+          "Font Awesome 5 Brands",
+          "simple-line-icons",
+        ],
+        urls: ["{% static 'assets/css/fonts.min.css' %}"],
+      },
+      active: function () {
+        sessionStorage.fonts = true;
+      },
+    });
+  </script>
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/plugins.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/kaiadmin.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
+
+  <style>
+    body {
+      background-color: #e8f5e9;
+      font-family: "Public Sans", sans-serif;
+    }
+
+    .login-card {
+      margin: 50px auto;
+      max-width: 500px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-card .card-header {
+      background-color: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    .login-card .card-header h4 {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .login-card .card-body {
+      padding: 30px;
+    }
+
+    .login-card .form-control {
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .login-card .btn {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+    }
+
+    .login-card .btn:hover {
+      background-color: #1b5e20;
+    }
+
+    .login-card .form-group a {
+      color: #2e7d32;
+      text-decoration: none;
+    }
+
+    .login-card .form-group a:hover {
+      text-decoration: underline;
+    }
+
+    .alert {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="login-card card">
+      <div class="card-header">
+        <h4>Login</h4>
+        <p>Access your dashboard</p>
+      </div>
+      <div class="card-body">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+        <form action="{% url 'doLogin' %}" method="POST">
+          {% csrf_token %}
+          <div class="form-group mb-3">
+            <input type="text" class="form-control" placeholder="Your Username" name="username" required />
+          </div>
+          <div class="form-group mb-3">
+            <input type="password" class="form-control" placeholder="Password" name="password" required />
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" class="btn btn-block">Login</button>
+          </div>
+          <div class="form-group text-center">
+            <a href="{% url 'index' %}"><i class="fa fa-home"></i> Home Page</a>
+          </div>
+          <div class="form-group text-center">
+            <a href="{% url 'donorsignup' %}"><i class="fa fa-user-plus"></i> Donor Signup</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core JS Files -->
+  <script src="{% static 'assets/js/core/jquery-3.7.1.min.js' %}"></script>
+  <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+  <script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+</body>
+</html>

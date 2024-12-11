@@ -1,0 +1,201 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>BBDMS Registration</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+
+    <!-- Fonts and icons -->
+    <script src="{% static 'assets/js/plugin/webfont/webfont.min.js' %}"></script>
+    <script>
+      WebFont.load({
+        google: { families: ["Public Sans:300,400,500,600,700"] },
+        custom: {
+          families: [
+            "Font Awesome 5 Solid",
+            "Font Awesome 5 Regular",
+            "Font Awesome 5 Brands",
+            "simple-line-icons",
+          ],
+          urls: ["{% static 'assets/css/fonts.min.css' %}"],
+        },
+        active: function () {
+          sessionStorage.fonts = true;
+        },
+      });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/plugins.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/kaiadmin.min.css' %}" />
+    <style>
+      /* Background Image */
+      body {
+        background: url("{% static 'assets/img/bbdms1.jpeg' %}") no-repeat center center fixed;
+        background-size: cover;
+        font-family: "Public Sans", sans-serif;
+      }
+
+      /* Card Styling */
+      .card.card-pricing {
+        border: 2px solid #28a745;
+        background: rgba(255, 255, 255, 0.9); /* Slight transparency */
+        color: #2e7d32;
+        margin: 30px auto;
+        max-width: 800px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
+
+      .card-header {
+        background-color: #28a745;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        border-radius: 10px 10px 0 0;
+      }
+
+      .card-title {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: bold;
+      }
+
+      .form-group label {
+        font-weight: bold;
+        color: #28a745;
+      }
+
+      .form-control {
+        border: 1px solid #28a745;
+        border-radius: 5px;
+      }
+
+      .form-control:focus {
+        border-color: #2e7d32;
+        box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+      }
+
+      .btn {
+        background-color: #28a745;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+      }
+
+      .btn:hover {
+        background-color: #218838;
+        color: #fff;
+      }
+
+      .form-group a {
+        color: #28a745;
+        text-decoration: none;
+      }
+
+      .form-group a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <div class="card card-pricing">
+            <div class="card-header">
+              <h4 class="card-title">Register to Raktasetu</h4>
+            </div>
+            <div class="card-body">
+              {% if messages %}
+                {% for message in messages %}
+                  {% if message.tags == 'error' %}
+                    <div class="alert alert-danger">
+                      {{ message }}
+                    </div>
+                  {% endif %}
+                  {% if message.tags == 'success' %}
+                    <div class="alert alert-success">
+                      {{ message }}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+              <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="pic">Profile Picture</label>
+                  <input type="file" id="pic" name="pic" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label for="first_name">First Name</label>
+                  <input type="text" id="first_name" name="first_name" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label for="last_name">Last Name</label>
+                  <input type="text" id="last_name" name="last_name" class="form-control" required />
+                </div>
+                 <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" id="username" name="username" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="email" id="email" name="email" class="form-control" required />
+                </div>
+                 <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" id="password" name="password" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label for="mobno">Mobile Number</label>
+                  <input type="text" id="mobno" name="mobno" class="form-control" maxlength="10" required />
+                </div>
+                <div class="form-group">
+                  <label for="age">Age</label>
+                  <input type="number" id="age" name="age" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label for="bg_id">Blood Group</label>
+                  <select id="bg_id" name="bg_id" class="form-control" required>
+                    <option value="">Select Blood Group</option>
+                    {% for i in bg %}
+                      <option value="{{ i.id }}">{{ i.bloodgroup }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="gender">Gender</label>
+                  <select id="gender" name="gender" class="form-control" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="address">Address</label>
+                  <textarea id="address" name="address" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group text-center">
+                  <button type="submit" class="btn">Register</button>
+                </div>
+                <div class="form-group text-center">
+                  <a href="{% url 'login' %}">Already Registered? Login</a>
+                  <br />
+                  <a href="{% url 'index' %}">Go to Home Page</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS -->
+    <script src="{% static 'assets/js/core/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+  </body>
+</html>

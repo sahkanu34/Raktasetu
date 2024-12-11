@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-inner">
+    <div class="page-header">
+      <h3 class="fw-bold mb-3">Blood Request Details</h3>
+      <ul class="breadcrumbs mb-3">
+        <li class="nav-home">
+          <a href="#">
+            <i class="icon-home"></i>
+          </a>
+        </li>
+        <li class="separator">
+          <i class="icon-arrow-right"></i>
+        </li>
+        <li class="nav-item">
+          Blood Request Details
+        </li>
+      
+        
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Blood Request Details</h4>
+          </div>
+          <div class="card-body">
+            {% if messages %}
+        {% for message in messages %}
+         {% if message.tags == 'error' %}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{message}}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+         </button>
+          </div>
+       {% endif %}
+        {% endfor %}
+       {% endif %}
+           {% if messages %}
+        {% for message in messages %}
+         {% if message.tags == 'success' %}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{message}}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+         </button>
+          </div>
+       {% endif %}
+        {% endfor %}
+       {% endif %}
+            <div class="table-responsive">
+              <table
+                id="basic-datatables"
+                class="display table table-striped table-hover"
+              >
+              {% if bloodreq %}
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name of Donor</th>
+                        <th>Conatct Number of Donor</th>
+                        <th>Blood Group of Donor</th>
+                        <th>Name of Requirer</th>
+                        <th>Mobile Number of Requirer</th>
+                        <th>Email of Requirer</th>
+                        <th>Blood Require For</th>
+                        <th>Message of Requirer</th>
+                         <th>Apply Date</th>
+                        
+                        </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>#</th>
+                        <th>Name of Donor</th>
+                        <th>Conatct Number of Donor</th>
+                        <th>Blood Group of Donor</th>
+                        <th>Name of Requirer</th>
+                        <th>Mobile Number of Requirer</th>
+                        <th>Email of Requirer</th>
+                        <th>Blood Require For</th>
+                        <th>Message of Requirer</th>
+                        <th>Apply Date</th>
+                        
+                        </tr>
+                </tfoot>
+                <tbody>
+                    
+                    {% for i in bloodreq %}
+                  <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.donid.admin.first_name}} {{i.donid.admin.last_name}}</td>
+                    <td>{{i.donid.mobilenumber}}</td>
+                    <td>{{i.donid.bloodgroup.bloodgroup}}</td>
+                    <td>{{i.fullname}}</td>
+                    <td>{{i.mobno}}</td>
+                    <td>{{i.email}}</td>
+                    <td>{{i.requirer}}</td>
+                    <td>{{i.message}}</td>
+                    <td>{{i.regdate_at}}
+                       </td>
+                
+                  </tr>{% endfor %}
+                  {% else %}
+                  <tr><p style="font-size: 20px;color: red;">No Request Received</p> </tr>
+                  
+                </tbody>{% endif %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     
+
+     
+    </div>
+  </div>
+
+
+
+{% endblock %}

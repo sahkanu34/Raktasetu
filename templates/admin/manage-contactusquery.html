@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="page-inner">
+    <div class="page-header">
+      <h3 class="fw-bold mb-3">Manage Contactus Query</h3>
+      <ul class="breadcrumbs mb-3">
+        <li class="nav-home">
+          <a href="#">
+            <i class="icon-home"></i>
+          </a>
+        </li>
+        <li class="separator">
+          <i class="icon-arrow-right"></i>
+        </li>
+        <li class="nav-item">
+          <a href="#">Manage Contactus Query</a>
+        </li>
+      
+        
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Manage Contactus Query</h4>
+          </div>
+          <div class="card-body">
+            {% if messages %}
+        {% for message in messages %}
+         {% if message.tags == 'error' %}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{message}}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+         </button>
+          </div>
+       {% endif %}
+        {% endfor %}
+       {% endif %}
+           {% if messages %}
+        {% for message in messages %}
+         {% if message.tags == 'success' %}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      {{message}}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+         </button>
+          </div>
+       {% endif %}
+        {% endfor %}
+       {% endif %}
+            <div class="table-responsive">
+              <table
+                id="basic-datatables"
+                class="display table table-striped table-hover"
+              >
+                <thead>
+                    <tr>
+                        <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Contact No</th>
+                            <th>Message</th>
+                            <th>Posting date</th>
+                            <th>Action</th>
+                        </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Contact No</th>
+                            <th>Message</th>
+                            <th>Posting date</th>
+                            <th>Action</th>
+                        </tr>
+                </tfoot>
+                <tbody>
+                    {% for i in ql %}
+                  <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.fullname}}</td>
+                    <td>{{i.email}}</td>
+                    <td>{{i.mobno}}</td>
+                    <td>{{i.message}}</td>
+                    <td>{{i.regdate_at}}</td>
+                    {% if i.status == "Read" %}
+                    <td> 
+                       <label class="btn btn-success">Read</label>
+                        
+                        <a href="{% url 'delete_contactus_query' i.id %}" class="btn btn-danger" onclick="return confirm('Do you really want to deletee this detail')">
+                        Delete
+                        </a></td>
+                    {% else %}
+                    <td> <a href="{% url 'pending_contactus_query' i.id %}" class="btn btn-primary">
+                        Pending
+                        </a>
+                        <a href="{% url 'delete_contactus_query' i.id %}" class="btn btn-danger" onclick="return confirm('Do you really want to deletee this detail')">
+                        Delete
+                        </a></td>{% endif %}
+                
+                  </tr>{% endfor %}
+                  
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     
+
+     
+    </div>
+  </div>
+
+
+
+{% endblock %}

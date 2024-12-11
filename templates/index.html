@@ -1,0 +1,223 @@
+{% extends 'userbase.html' %}
+{% load static %}
+
+{% block content %}
+ 
+<section class="slider_section ">
+    <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="container ">
+            <div class="row">
+              <div class="col-md-7">
+                <div class="detail-box">
+                  <h1>
+                    Blood is meant for circulation. 
+                    Donate Blood.
+                  </h1>
+                  <p>
+                    {% comment %} A blood bank is a center where blood gathered as a result of blood donation is stored and preserved for later use in blood transfusion. The term "blood bank" typically refers to a department of a hospital usually within a clinical pathology laboratory where the storage of blood product occurs and where pre-transfusion and blood compatibility testing is performed. However, it sometimes refers to a collection center, and some hospitals also perform collection. {% endcomment %}
+                  </p>
+                  <div class="btn-box">
+                 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item ">
+          <div class="container ">
+            <div class="row">
+              <div class="col-md-7">
+                <div class="detail-box">
+                  <h1>
+                    Every drop counts. 
+                    Be a hero.
+                  </h1>
+                  <p>
+                    {% comment %} A blood bank is a center where blood gathered as a result of blood donation is stored and preserved for later use in blood transfusion. The term "blood bank" typically refers to a department of a hospital usually within a clinical pathology laboratory where the storage of blood product occurs and where pre-transfusion and blood compatibility testing is performed. However, it sometimes refers to a collection center, and some hospitals also perform collection. {% endcomment %}
+                  </p>
+                  <div class="btn-box">
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="container ">
+            <div class="row">
+              <div class="col-md-7">
+                <div class="detail-box">
+                  <h1>
+                    Share your strength. 
+                    Give blood
+                  </h1>
+                  <p>
+                    {% comment %} A blood bank is a center where blood gathered as a result of blood donation is stored and preserved for later use in blood transfusion. The term "blood bank" typically refers to a department of a hospital usually within a clinical pathology laboratory where the storage of blood product occurs and where pre-transfusion and blood compatibility testing is performed. However, it sometimes refers to a collection center, and some hospitals also perform collection. {% endcomment %}
+                  </p>
+                  <div class="btn-box">
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ol class="carousel-indicators">
+        <li data-target="#customCarousel1" data-slide-to="0" class="active"></li>
+        <li data-target="#customCarousel1" data-slide-to="1"></li>
+        <li data-target="#customCarousel1" data-slide-to="2"></li>
+      </ol>
+    </div>
+
+  </section>
+  <!-- end slider section -->
+</div>
+
+
+<!-- department section -->
+
+
+<!-- end department section -->
+
+<!-- about section -->
+
+<section class="about_section layout_margin-bottom">
+  <div class="container  ">
+    <div class="row">
+      <div class="col-md-6 ">
+        <div class="img-box">
+          <img src="{% static 'assets1/images/about-img.jpg'%}" height="300" width="200" alt="">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="detail-box">
+          <div class="heading_container">
+            <h2>
+              About <span>Us</span>
+            </h2>
+          </div>
+          <p>
+            In Ghadiarwa-10, we are dedicated to saving lives through our Blood Bank Management System. We connect generous donors with patients in need, ensuring every drop counts. Our platform streamlines the donation process, making it easier to track and manage blood supplies.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- end about section -->
+
+<!-- doctor section -->
+
+<section class="doctor_section layout_padding">
+  <div class="container">
+    <div class="heading_container heading_center">
+      <h2>
+       Some of the Donor
+      </h2>
+      <p class="col-md-10 mx-auto px-0">
+        
+      </p>
+    </div>
+    <div class="row">
+        {% for i in dv %}
+      <div class="col-sm-6 col-lg-4 mx-auto">
+        <div class="box">
+          <div class="img-box">
+            <img src="{{i.admin.profile_pic.url}}" width="150" height="150" alt="">
+          </div>
+          <div class="detail-box">
+          
+            <h5>
+                {{i.admin.first_name}} {{i.admin.last_name}}
+            </h5>
+            <p>Gender: {{i.gender}}</p>
+            <p>Blood Group: {{i.bloodgroup.bloodgroup}}</p>
+            <h6 class="">
+              <a href="{% url 'blood-request' i.id %}" class="btn btn-primary">Request</a>
+            </h6>
+          </div>
+        </div>
+      </div>{% endfor %}
+      
+      
+    </div>
+    
+  </div>
+</section>
+
+<!-- end doctor section -->
+
+<!-- contact section -->
+<section class="contact_section layout_padding">
+  <div class="container">
+    <div class="heading_container">
+      <h2>
+        Get In Touch
+      </h2>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="form_container contact-form">
+          {% if messages %}
+      {% for message in messages %}
+       {% if message.tags == 'error' %}
+     <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+    {{message}}
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+   <span aria-hidden="true">&times;</span>
+       </button>
+        </div>
+     {% endif %}
+      {% endfor %}
+     {% endif %}
+         {% if messages %}
+      {% for message in messages %}
+       {% if message.tags == 'success' %}
+     <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+    {{message}}
+   <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+   <span aria-hidden="true">&times;</span>
+       </button>
+        </div>
+     {% endif %}
+      {% endfor %}
+     {% endif %}
+          <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-row">
+              <div class="col-lg-6">
+                <div>
+                  <input type="text" placeholder="Your Name"  name="fullname" required="true"/>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div>
+                  <input type="text" placeholder="Phone Number" name="mobno" required="true"/>
+                </div>
+              </div>
+            </div>
+            <div>
+              <input type="email" placeholder="Email" name="email" required="true"/>
+            </div>
+            <div>
+              <input type="text" class="message-box" placeholder="Message" name="message" required="true"/>
+            </div>
+            <div class="btn_box">
+              <button>
+                SEND
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
