@@ -21,5 +21,5 @@ ENV PYTHONUNBUFFERED=1
 
 ENV DJANGO_SETTINGS_MODULE=your_project_name.settings.production
 
-# Run streamlit when the container launches
-CMD ["python", "manage.py", "runserver","0.0.0:8000"]
+
+CMD ["python", "manage.py", "runserver"]
