@@ -1,0 +1,34 @@
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=your_project_name.settings
+    volumes:
+      - .:/app
+    networks:
+      - django_network
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: bbdmspythondb
+      MYSQL_USER: newuser
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3307:3306"  # Map container port 3306 to host port 3307
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - django_network
+
+networks:
+  django_network:
+
+volumes:
+  mysql_data:
