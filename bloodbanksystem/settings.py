@@ -68,12 +68,11 @@ WSGI_APPLICATION = 'bloodbanksystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bbdmspythondb',
-        'USER': 'newuser',
-        'PASSWORD': '1234',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        
+        'NAME': os.getenv('DATABASE_NAME', 'bbdmspythondb'),  # Database name
+        'USER': os.getenv('DATABASE_USER', 'newuser'),        # Database user
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', '1234'),   # Database password
+        'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),      # Database host
+        'PORT': os.getenv('DATABASE_PORT', '3306'),           # Database port
     }
 }
 

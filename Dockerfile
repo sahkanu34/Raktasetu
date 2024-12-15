@@ -1,21 +1,35 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+# Use the official Python image as the base image
+FROM python:3.11-slim
 
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --upgrade pip
-RUN pip install django mysql-connector pillow mysqlclient
-
-# Make port 8000 available to the world outside this container
-EXPOSE 8000
-
-# Define environment variable to ensure output is sent to terminal
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Run django server  when the container launches
-CMD ["python", "manage.py", "runserver"]
+# Set the working directory inside the container
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+       libmysqlclient-dev \
+       gcc \
+       && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy project files to the container
+COPY . /app/
+
+# Configure MySQL database
+ENV DB_NAME=bbdmspythondb
+ENV DB_USER=newuser
+ENV DB_PASSWORD=1234
+ENV DB_HOST=127.0.0.1
+ENV DB_PORT=3306
+
+# Expose port 8000
+EXPOSE 8000
+
+# Run the Django development server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
