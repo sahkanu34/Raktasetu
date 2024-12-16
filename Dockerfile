@@ -1,25 +1,24 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11-slim-buster
+FROM python:3.9
 
-# Set the working directory in the container
 WORKDIR /app
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     default-libmysqlclient-dev \
-    build-essential
+    build-essential \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the current directory contents into the container at /app
-COPY . /app
-
+# Upgrade pip
 RUN pip install --upgrade pip
 
-RUN pip install mysqlclient mysql-connector django pillow 
+# Install Python packages
+RUN pip install mysqlclient mysql-connector-python django pillow
+
+# Rest of your Dockerfile continues...
+
+COPY . .
 
 EXPOSE 8000:8000
 
-ENV PYTHONUNBUFFERED=1
-
-ENV DJANGO_SETTINGS_MODULE=your_project_name.settings.production
-
-
-CMD ["python", "manage.py", "runserver"]
+CMD [ "python","manage.py","runserver" ]
