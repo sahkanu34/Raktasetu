@@ -65,4 +65,4 @@ urlpatterns = [
     path('user/Contactus', userviews.CONTACTUS, name="contactus"),
     path('user/SearchDonor', userviews.SEARCHDONOR, name="search-donor"),
 
-]+static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
