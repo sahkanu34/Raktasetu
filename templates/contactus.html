@@ -2,164 +2,73 @@
 {% load static %}
 
 {% block content %}
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
-<div class="container">
-    <section class="search-section">
-        <div class="heading">
-            <h2>Contact For Blood</h2>
+<section class="contact_section layout_padding">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Get In Touch
+        </h2>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form_container contact-form">
+            {% if messages %}
+        {% for message in messages %}
+         {% if message.tags == 'error' %}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+      {{message}}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+     <span aria-hidden="true">&times;</span>
+         </button>
+          </div>
+       {% endif %}
+        {% endfor %}
+       {% endif %}
+           {% if messages %}
+        {% for message in messages %}
+         {% if message.tags == 'success' %}
+       <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
+      {{message}}
+     <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
+     <span aria-hidden="true">&times;</span>
+         </button>
+          </div>
+       {% endif %}
+        {% endfor %}
+       {% endif %}
+            <form action="" method="POST">
+              {% csrf_token %}
+              <div class="form-row">
+                <div class="col-lg-6">
+                  <div>
+                    <input type="text" placeholder="Your Name"  name="fullname" required="true"/>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div>
+                    <input type="text" placeholder="Phone Number" name="mobno" required="true"/>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <input type="email" placeholder="Email" name="email" required="true"/>
+              </div>
+              <div>
+                <input type="text" class="message-box" placeholder="Message" name="message" required="true"/>
+              </div>
+              <div class="btn_box">
+                <button>
+                  SEND
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
 
-        <form method="POST" action="{% url 'blood-request-details' %}" class="search-form">
-            {% csrf_token %}
-            <input type="hidden" name="donor_id" value="{{donview.id}}" required>
-            
-            <div class="form-group">
-                <i class="fas fa-user"></i>
-                <input type="text" class="form-control" name="fullname" placeholder="Your Name" required>
-            </div>
+      </div>
+    </div>
+  </section>
 
-            <div class="form-group">
-                <i class="fas fa-phone"></i>
-                <input type="text" class="form-control" name="mobno" placeholder="Phone Number" required maxlength="10" pattern="[0-9]+">
-            </div>
 
-            <div class="form-group">
-                <i class="fas fa-envelope"></i>
-                <input type="email" class="form-control" name="email" placeholder="Email" required>
-            </div>
-
-            <div class="form-group">
-                <i class="fas fa-user-friends"></i>
-                <input type="text" class="form-control" name="requirer" placeholder="Blood Required For">
-            </div>
-
-            <div class="form-group">
-                <i class="fas fa-comment"></i>
-                <textarea class="form-control" name="message" placeholder="Message" rows="4"></textarea>
-            </div>
-
-            <button type="submit" class="search-btn">
-                <i class="fas fa-paper-plane"></i> SEND
-            </button>
-        </form>
-    </section>
-</div>
-
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-        min-height: 100vh;
-        padding: 2rem 1rem;
-    }
-
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2rem 1rem;
-    }
-
-    .search-section {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        padding: 2rem;
-        border-radius: 20px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        margin-bottom: 2rem;
-        transform: translateY(20px);
-        opacity: 0;
-        animation: slideUp 0.5s ease forwards;
-    }
-
-    .heading {
-        text-align: center;
-        margin-bottom: 2rem;
-        color: #2e7d32;
-    }
-
-    .heading h2 {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .search-form {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .form-group {
-        position: relative;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 1rem;
-        padding-left: 2.5rem;
-        border: 2px solid #e0e0e0;
-        border-radius: 10px;
-        outline: none;
-        transition: all 0.3s ease;
-        font-size: 0.9rem;
-    }
-
-    .form-control:focus {
-        border-color: #4CAF50;
-        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
-    }
-
-    .form-group i {
-        position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #2e7d32;
-        font-size: 1.2rem;
-    }
-
-    .search-btn {
-        padding: 1rem 2rem;
-        background: #2e7d32;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        width: 100%;
-    }
-
-    .search-btn:hover {
-        background: #1b5e20;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
-    }
-
-    textarea.form-control {
-        min-height: 100px;
-        resize: vertical;
-    }
-
-    @keyframes slideUp {
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .heading h2 {
-            font-size: 2rem;
-        }
-    }
-</style>
 {% endblock %}
