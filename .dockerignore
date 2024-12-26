@@ -9,3 +9,4 @@ venv/
 .gitignore
 .env
 *.md
+/media

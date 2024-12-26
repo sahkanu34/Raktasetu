@@ -2,30 +2,124 @@
 {% load static %}
 
 {% block content %}
-<section class="about_section layout_padding">
-    <div class="container  ">
-      <div class="row">
-        <div class="col-md-6 ">
-          <div class="img-box">
-            <img src="{% static 'assets1/images/about-img.jpg'%}" height="300" width="200" alt="">
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="detail-box">
-            <div class="heading_container">
-              <h2>
-                About <span>Us</span>
-              </h2>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    .about_section {
+        background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        padding: 90px 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .img-box {
+        position: relative;
+        overflow: hidden;
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        animation: slideRight 0.5s ease forwards;
+    }
+
+    .img-box img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+    }
+
+    .img-box:hover img {
+        transform: scale(1.05);
+    }
+
+    .detail-box {
+        padding: 20px;
+        animation: slideLeft 0.5s ease forwards;
+    }
+
+    .heading_container {
+        margin-bottom: 30px;
+    }
+
+    .heading_container h2 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: #2e7d32;
+        margin-bottom: 15px;
+    }
+
+    .heading_container h2 span {
+        color: #1b5e20;
+    }
+
+    .detail-box p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    @keyframes slideRight {
+        from {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideLeft {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .about_section {
+            padding: 60px 0;
+        }
+
+        .heading_container h2 {
+            font-size: 2rem;
+        }
+
+        .img-box {
+            margin-bottom: 30px;
+        }
+    }
+</style>
+
+<section class="about_section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="img-box">
+                    <img src="{% static 'assets1/images/about-img.jpg' %}" alt="About Us">
+                </div>
             </div>
-            <p>
-            In Ghadiarwa-10, we are dedicated to saving lives through our Blood Bank Management System. We connect generous donors with patients in need, ensuring every drop counts. Our platform streamlines the donation process, making it easier to track and manage blood supplies.
-            </p>
-
-          </div>
+            <div class="col-md-6">
+                <div class="detail-box">
+                    <div class="heading_container">
+                        <h2>About <span>Us</span></h2>
+                    </div>
+                    <p>
+                        In Ghadiarwa-10, we are dedicated to saving lives through our Blood Bank Management System. We connect generous donors with patients in need, ensuring every drop counts. Our platform streamlines the donation process, making it easier to track and manage blood supplies.
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </section>
-
-
+</section>
 {% endblock %}
