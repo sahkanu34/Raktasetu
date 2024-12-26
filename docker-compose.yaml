@@ -1,0 +1,6 @@
+services:
+  django:
+    image: django-web.app
+    build: .
+    ports:
+      - "8000:8000"

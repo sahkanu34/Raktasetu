@@ -1,68 +1,228 @@
-{% extends 'userbase.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donors List</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-{% block content %}
+        body {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
 
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-  <section class="doctor_section layout_padding">
+        .heading-container {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .heading-container h2 {
+            color: #2e7d32;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 1rem;
+        }
+
+        .heading-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #4CAF50;
+            border-radius: 2px;
+        }
+
+        .donors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .donor-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .donor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .donor-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 4px solid #4CAF50;
+        }
+
+        .donor-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .donor-name {
+            color: #2e7d32;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .donor-details {
+            color: #555;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .donor-details i {
+            color: #4CAF50;
+        }
+
+        .request-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: #2e7d32;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .request-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .alert-warning {
+            background: #fff3e0;
+            border-left: 4px solid #ef6c00;
+            color: #e65100;
+        }
+
+        .alert button {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .heading-container h2 {
+                font-size: 2rem;
+            }
+            
+            .donors-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% extends 'userbase.html' %}
+    {% load static %}
+
+    {% block content %}
     <div class="container">
-      <div class="heading_container heading_center">
-        <h2>
-          Our Donor List
-        </h2>
-        <p class="col-md-10 mx-auto px-0">
-           
-        </p>
-      </div>
-      {% if messages %}
-      {% for message in messages %}
-       {% if message.tags == 'error' %}
-     <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
-    {{message}}
-   <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
-   <span aria-hidden="true">&times;</span>
-       </button>
+        <div class="heading-container">
+            <h2>Our Donors List</h2>
         </div>
-     {% endif %}
-      {% endfor %}
-     {% endif %}
-         {% if messages %}
-      {% for message in messages %}
-       {% if message.tags == 'success' %}
-     <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
-    {{message}}
-   <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
-   <span aria-hidden="true">&times;</span>
-       </button>
-        </div>
-     {% endif %}
-      {% endfor %}
-     {% endif %}
-      <div class="row">
-        {% for i in dv %}
-        <div class="col-sm-6 col-lg-4 mx-auto">
-          <div class="box">
-            <div class="img-box">
-              <img src="{{i.admin.profile_pic.url}}" width="200" height="300" alt="">
-            </div>
-            <div class="detail-box">
 
-              <h5>
-                {{i.admin.first_name}} {{i.admin.last_name}}
-              </h5>
-              <p>Gender: {{i.gender}}</p>
-            <p>Blood Group: {{i.bloodgroup.bloodgroup}}</p>
-            <h6 class="">
-              <a href="{% url 'blood-request' i.id %}" class="btn btn-primary">Request</a>
-            </h6>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="donors-grid">
+            {% for i in dv %}
+            <div class="donor-card">
+                <img src="{{i.admin.profile_pic.url}}" alt="{{i.admin.first_name}}" class="donor-image">
+                <div class="donor-info">
+                    <h3 class="donor-name">{{i.admin.first_name}} {{i.admin.last_name}}</h3>
+                    
+                    <p class="donor-details">
+                        <i class="fas fa-venus-mars"></i>
+                        <span>{{i.gender}}</span>
+                    </p>
+                    
+                    <p class="donor-details">
+                        <i class="fas fa-tint"></i>
+                        <span>{{i.bloodgroup.bloodgroup}}</span>
+                    </p>
+
+                    <a href="{% url 'blood-request' i.id %}" class="request-btn">
+                        <i class="fas fa-hand-holding-medical"></i> Request Blood
+                    </a>
+                </div>
             </div>
-          </div>
-        </div>{% endfor %}
-       
-       
-      </div>
-      
+            {% endfor %}
+        </div>
     </div>
-  </section>
-
-{% endblock %}
+    {% endblock %}
+</body>
+</html>

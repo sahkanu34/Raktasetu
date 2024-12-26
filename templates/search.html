@@ -1,128 +1,285 @@
-{% extends 'userbase.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Blood Donors</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-{% block content %}
-<section class="contact_section layout_padding">
+        body {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .search-section {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2e7d32;
+        }
+
+        .heading h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        @media (max-width: 768px) {
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            padding-left: 2.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2e7d32;
+            font-size: 1.2rem;
+        }
+
+        .search-btn {
+            padding: 1rem 2rem;
+            background: #2e7d32;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .search-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
+        }
+
+        .donors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .donor-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .donor-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .donor-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .donor-info {
+            padding: 1.5rem;
+        }
+
+        .donor-name {
+            font-size: 1.2rem;
+            color: #2e7d32;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .donor-details {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .social-links a {
+            color: #2e7d32;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #1b5e20;
+            transform: translateY(-2px);
+        }
+
+        .request-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: #2e7d32;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .request-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(27, 94, 32, 0.3);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .alert-warning {
+            background: #fff3e0;
+            border-left: 4px solid #ef6c00;
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
     <div class="container">
-      <div class="heading_container">
-        <h2>
-        Search Donor
-        </h2>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="form_container contact-form">
-            
-            <form action="" method="GET">
-              {% csrf_token %}
-              <div class="form-row">
-                <div class="col-lg-6">
-                  <div>
-                    <select type="text" name="bloodgroup" id="bloodgroup" value="" class="form-control" required="true">
-                        <option value="">Choose Blood Group</option>
+        <section class="search-section">
+            <div class="heading">
+                <h2>Search Blood Donors</h2>
+                <p>Find blood donors in your area</p>
+            </div>
+
+            <form method="GET" class="search-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <i class="fas fa-tint"></i>
+                    <select class="form-control" name="bloodgroup" required>
+                        <option value="">Select Blood Group</option>
                         {% for i in bgrp %}
-   
-                              <option value="{{i.bloodgroup}}">{{i.bloodgroup}}</option>{% endfor %}
+                            <option value="{{i.bloodgroup}}">{{i.bloodgroup}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
 
-                        </select>
-                  </div>
+                <div class="form-group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" class="form-control" name="location" placeholder="Enter Location" required>
                 </div>
-                <div class="col-lg-6">
-                  <div>
-                    <input type="text" placeholder="Location" name="location" class="form-control" required="true"/>
-                  </div>
-                </div>
-              </div>
-              
-              
-              <div class="btn_box">
-                <button>
-                  Search
+
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i> Search
                 </button>
-              </div>
             </form>
-<br>
 
-            <section class="doctor_section layout_padding" >
-                <div class="container" style="padding-top: 20px;">
-               
-                  {% if messages %}
-                  {% for message in messages %}
-                   {% if message.tags == 'error' %}
-                 <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: red;">
-                {{message}}
-               <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
-               <span aria-hidden="true">&times;</span>
-                   </button>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
                     </div>
-                 {% endif %}
-                  {% endfor %}
-                 {% endif %}
-                     {% if messages %}
-                  {% for message in messages %}
-                   {% if message.tags == 'info' %}
-                 <div class="alert alert-warning alert-dismissible fade show" role="alert" style="color: purple;">
-                {{message}}
-               <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color: red;">
-               <span aria-hidden="true">&times;</span>
-                   </button>
+                {% endfor %}
+            {% endif %}
+        </section>
+
+        {% if searchdonor %}
+        <div class="donors-grid">
+            {% for donor in searchdonor %}
+            <div class="donor-card">
+                <img src="{{donor.admin.profile_pic.url}}" alt="{{donor.admin.first_name}}" class="donor-image">
+                <div class="donor-info">
+                    <h3 class="donor-name">{{donor.admin.first_name}} {{donor.admin.last_name}}</h3>
+                    
+                    <div class="social-links">
+                        <a href=""><i class="fab fa-facebook-f"></i></a>
+                        <a href=""><i class="fab fa-twitter"></i></a>
+                        <a href=""><i class="fab fa-youtube"></i></a>
+                        <a href=""><i class="fab fa-linkedin-in"></i></a>
                     </div>
-                 {% endif %}
-                  {% endfor %}
-                 {% endif %}
-                 {% if searchdonor %}
-                  <div class="row">
-                    {% for donor in searchdonor %}
-                    <div class="col-sm-6 col-lg-4 mx-auto">
-                      <div class="box">
-                        <div class="img-box">
-                          <img src="{{donor.admin.profile_pic.url}}" width="100" height="200" alt="">
-                        </div>
-                        <div class="detail-box">
-                         <div class="social_box">
-                            <a href="">
-                              <i class="fa fa-facebook" aria-hidden="true"></i>
-                            </a>
-                            <a href="">
-                              <i class="fa fa-twitter" aria-hidden="true"></i>
-                            </a>
-                            <a href="">
-                              <i class="fa fa-youtube" aria-hidden="true"></i>
-                            </a>
-                            <a href="">
-                              <i class="fa fa-linkedin" aria-hidden="true"></i>
-                            </a>
-                          </div> 
-                          <h5>
-                            {{donor.admin.first_name}} {{donor.admin.last_name}}
-                          </h5>
-                          <p>Gender: {{donor.gender}}</p>
-                        <p>Blood Group: {{donor.bloodgroup.bloodgroup}}</p>
-                        <p>Age: {{donor.age}}</p>
-                        <p>Mobile Number: {{donor.mobilenumber}}</p>
-                        <p>Address: {{donor.address}}</p>
-                        
-                        <h6 class="">
-                          <a href="{% url 'blood-request' donor.id %}" class="btn btn-primary">Request</a>
-                        </h6>
-                        </div>
-                      </div>
-                    </div>{% endfor %}
-                   
-                   
-                  </div>
-                  
+
+                    <p class="donor-details"><i class="fas fa-venus-mars"></i> {{donor.gender}}</p>
+                    <p class="donor-details"><i class="fas fa-tint"></i> {{donor.bloodgroup.bloodgroup}}</p>
+                    <p class="donor-details"><i class="fas fa-birthday-cake"></i> {{donor.age}} years</p>
+                    <p class="donor-details"><i class="fas fa-phone"></i> {{donor.mobilenumber}}</p>
+                    <p class="donor-details"><i class="fas fa-map-marker-alt"></i> {{donor.address}}</p>
+
+                    <a href="{% url 'blood-request' donor.id %}" class="request-btn">
+                        <i class="fas fa-hand-holding-medical"></i> Request Blood
+                    </a>
                 </div>
-              </section>
-              {% endif %}
-       
-      </div>
-          </div>
+            </div>
+            {% endfor %}
         </div>
-        
-      </div>
+        {% endif %}
     </div>
-  </section>
-
-
-{% endblock %}
+</body>
+</html>
