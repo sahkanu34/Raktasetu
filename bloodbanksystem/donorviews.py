@@ -9,6 +9,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 import re
 from django.core.mail import get_connection
+import os
 
 
 def is_strong_password(password):
@@ -32,50 +33,119 @@ def validate_age(age):
     if age > 65:  # Adding upper limit for safety
         raise ValidationError('Maximum age for blood donation is 65 years.')
 
+def validate_image_extension(value):
+    ext = os.path.splitext(value.name)[1]
+    valid_extensions = ['.jpg', '.jpeg', '.png']
+    if not ext.lower() in valid_extensions:
+        raise ValidationError('Unsupported file extension. Please use .jpg, .jpeg, or .png files.')
+
+def validate_name(value):
+    if not re.match("^[a-zA-Z ]+$", value):
+        raise ValidationError('Name can only contain letters and spaces.')
+
 def DONORSIGNUP(request):
     bg = Bloodgroup.objects.all()
     if request.method == "POST":
-        pic = request.FILES.get('pic')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        mobno = request.POST.get('mobno')
-        age = request.POST.get('age')
-        bg_id = request.POST.get('bg_id')
-        gender = request.POST.get('gender')
-        address = request.POST.get('address')
-        password = request.POST.get('password')
-
-        # Validate Email
         try:
-            validate_email(email)  # Basic email format validation
-            # Check if email ends with allowed domains
-            allowed_domains = ['gmail.com', 'yahoo.com']  # Add any other domains you want to allow
-            if not any(email.endswith(domain) for domain in allowed_domains):
-                raise ValidationError(f"Email must be one of the following: {', '.join(allowed_domains)}")
-        except ValidationError as e:
-            messages.error(request, str(e))
-            return redirect('donorsignup')
+            # Get all form fields
+            pic = request.FILES.get('pic')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            mobno = request.POST.get('mobno')
+            age = request.POST.get('age')
+            bg_id = request.POST.get('bg_id')
+            gender = request.POST.get('gender')
+            address = request.POST.get('address')
+            password = request.POST.get('password')
 
-        # Validate Username
-        if not re.match("^[a-zA-Z0-9_]+$", username):
-            messages.error(request, 'Username can only contain letters, numbers, and underscores.')
-            return redirect('donorsignup')
+            # Profile picture validation
+            if not pic:
+                messages.error(request, 'Profile picture is required')
+                return redirect('donorsignup')
+            
+            ext = os.path.splitext(pic.name)[1].lower()
+            if ext not in ['.jpg', '.jpeg', '.png']:
+                messages.error(request, 'Only .jpg, .jpeg, or .png files are allowed for profile picture')
+                return redirect('donorsignup')
 
-        # Validate Password
-        if not is_strong_password(password):
-            messages.error(request, 'Password must be at least 8 characters long, contain uppercase and lowercase letters, a number, and a special character.')
-            return redirect('donorsignup')
+            # Name validation
+            if not first_name.replace(' ', '').isalpha():
+                messages.error(request, 'First name should only contain letters')
+                return redirect('donorsignup')
 
-        # Check if email or username already exists
-        if CustomUser.objects.filter(email=email).exists():
-            messages.error(request, 'Email already exists, please try another email address')
-            return redirect('donorsignup')
-        if CustomUser.objects.filter(username=username).exists():
-            messages.error(request, 'Username already exists, please try another username')
-            return redirect('donorsignup')
-        else:
+            if not last_name.replace(' ', '').isalpha():
+                messages.error(request, 'Last name should only contain letters')
+                return redirect('donorsignup')
+
+            # Username validation
+            if not re.match("^[a-zA-Z0-9_]{3,20}$", username):
+                messages.error(request, 'Username must be 3-20 characters and can only contain letters, numbers, and underscores')
+                return redirect('donorsignup')
+
+            # Email validation
+            if not re.match(r'^[a-zA-Z0-9._%+-]+@(gmail|yahoo)\.com$', email.lower()):
+                messages.error(request, 'Please use a valid Gmail or Yahoo email address')
+                return redirect('donorsignup')
+
+            # Mobile number validation
+            if not re.match("^[0-9]{10}$", mobno):
+                messages.error(request, 'Mobile number must be exactly 10 digits')
+                return redirect('donorsignup')
+
+            # Age validation
+            try:
+                age_num = int(age)
+                if age_num < 18 or age_num > 65:
+                    messages.error(request, 'Age must be between 18 and 65 years')
+                    return redirect('donorsignup')
+            except ValueError:
+                messages.error(request, 'Please enter a valid age')
+                return redirect('donorsignup')
+
+            # Blood group validation
+            if not bg_id:
+                messages.error(request, 'Please select a blood group')
+                return redirect('donorsignup')
+
+            # Gender validation
+            if not gender:
+                messages.error(request, 'Please select a gender')
+                return redirect('donorsignup')
+
+            # Address validation
+            if not address.strip():
+                messages.error(request, 'Address is required')
+                return redirect('donorsignup')
+
+            # Password validation
+            if len(password) < 8:
+                messages.error(request, 'Password must be at least 8 characters long')
+                return redirect('donorsignup')
+            if not re.search("[A-Z]", password):
+                messages.error(request, 'Password must contain at least one uppercase letter')
+                return redirect('donorsignup')
+            if not re.search("[a-z]", password):
+                messages.error(request, 'Password must contain at least one lowercase letter')
+                return redirect('donorsignup')
+            if not re.search("[0-9]", password):
+                messages.error(request, 'Password must contain at least one number')
+                return redirect('donorsignup')
+            if not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
+                messages.error(request, 'Password must contain at least one special character')
+                return redirect('donorsignup')
+
+            # Check existing email/username
+            if CustomUser.objects.filter(email=email).exists():
+                messages.error(request, 'This email is already registered')
+                return redirect('donorsignup')
+            
+            if CustomUser.objects.filter(username=username).exists():
+                messages.error(request, 'This username is already taken')
+                return redirect('donorsignup')
+
+            # If all validations pass, create the user
             user = CustomUser(
                 first_name=first_name,
                 last_name=last_name,
@@ -87,8 +157,8 @@ def DONORSIGNUP(request):
             user.set_password(password)
             user.save()
 
+            # Create donor profile
             bg_instance = Bloodgroup.objects.get(id=bg_id)
-
             blooddonor = DonorReg(
                 admin=user,
                 age=age,
@@ -99,16 +169,17 @@ def DONORSIGNUP(request):
             )
             blooddonor.save()
 
-            messages.success(request, 'Signup Successfully')
+            messages.success(request, 'Registration successful! You can now login.')
+            return redirect('donorsignup')
+
+        except Exception as e:
+            messages.error(request, f'An error occurred during registration: {str(e)}')
             return redirect('donorsignup')
 
     context = {
         'bg': bg
     }
-
     return render(request, 'donor/donor-signup.html', context)
-
-
 User = get_user_model()
 
 

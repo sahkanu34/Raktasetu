@@ -4,6 +4,7 @@ from django.contrib.auth import  logout,login,authenticate
 from django.contrib.auth.decorators import login_required
 from bbdmsapp.models import CustomUser,Bloodgroup,DonorReg,Contact,BloodRequest
 from django.contrib.auth import get_user_model
+import re
 
 User = get_user_model()
 
@@ -120,3 +121,40 @@ def CHANGE_PASSWORD(request):
           messages.success(request,'Current Password wrong!!!')
           return redirect("change_password")
      return render(request,'change-password.html')
+
+def contact(request):
+    if request.method == 'POST':
+        fullname = request.POST.get('fullname')
+        mobno = request.POST.get('mobno')
+        email = request.POST.get('email')
+        message = request.POST.get('message')
+
+        # Server-side validation
+        if not mobno.isdigit() or len(mobno) != 10:
+            messages.error(request, 'Please enter a valid 10-digit phone number')
+            return redirect('contact')
+        
+        # Email validation for only gmail and yahoo
+        allowed_domains = ['@gmail.com', '@yahoo.com']
+        email = email.lower()  # Convert to lowercase for case-insensitive comparison
+        
+        # Check if email ends with any of the allowed domains
+        if not any(email.endswith(domain) for domain in allowed_domains):
+            messages.error(request, 'Please use a valid Gmail or Yahoo email address')
+            return redirect('contact')
+
+        # Basic email validation
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_regex, email):
+            messages.error(request, 'Please enter a valid email address')
+            return redirect('contact')
+
+        try:
+            # Your code to save the contact form data goes here
+            messages.success(request, 'Your message has been sent successfully!')
+            return redirect('contact')
+        except Exception as e:
+            messages.error(request, 'Something went wrong. Please try again.')
+            return redirect('contact')
+
+    return render(request, 'contactus.html')

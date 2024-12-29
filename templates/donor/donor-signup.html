@@ -222,103 +222,209 @@
     </style>
 </head>
 <body>
-    <div class="registration-container">
-        <div class="registration-header">
-            <h2>Join Raktasetu</h2>
-            <p>Register to become a blood donor</p>
+<div class="registration-container">
+    <div class="registration-header">
+        <h2>Join Raktasetu</h2>
+        <p>Register to become a blood donor</p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" id="registrationForm" onsubmit="return validateForm()">
+        {% csrf_token %}
+        
+        <div class="form-group full-width">
+            <label class="form-label">Profile Picture</label>
+            <div class="file-upload">
+                <label class="file-upload-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Click to upload profile picture</span>
+                    <input type="file" id="pic" name="pic" required accept="image/*">
+                </label>
+            </div>
+            <small class="error" id="picError" style="color: red;"></small>
         </div>
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            
-            <div class="form-group full-width">
-                <label class="form-label">Profile Picture</label>
-                <div class="file-upload">
-                    <label class="file-upload-label">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <span>Click to upload profile picture</span>
-                        <input type="file" id="pic" name="pic" required>
-                    </label>
-                </div>
+        <div class="form-grid">
+            <div class="form-group">
+                <label class="form-label">First Name</label>
+                <i class="fas fa-user"></i>
+                <input type="text" class="form-control" name="first_name" id="first_name" 
+                       pattern="^[A-Za-z\s]{2,30}$" 
+                       title="Name should contain only letters and spaces (2-30 characters)" required>
+                <small class="error" id="firstNameError" style="color: red;"></small>
             </div>
 
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label">First Name</label>
-                    <i class="fas fa-user"></i>
-                    <input type="text" class="form-control" name="first_name" required>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <i class="fas fa-user"></i>
+                <input type="text" class="form-control" name="last_name" id="last_name" 
+                       pattern="^[A-Za-z\s]{2,30}$" 
+                       title="Name should contain only letters and spaces (2-30 characters)" required>
+                <small class="error" id="lastNameError" style="color: red;"></small>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Last Name</label>
-                    <i class="fas fa-user"></i>
-                    <input type="text" class="form-control" name="last_name" required>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <i class="fas fa-at"></i>
+                <input type="text" class="form-control" name="username" id="username" 
+                       pattern="^[a-zA-Z0-9_]{4,20}$"
+                       title="Username should be 4-20 characters long and can contain letters, numbers, and underscore" required>
+                <small class="error" id="usernameError" style="color: red;"></small>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <i class="fas fa-at"></i>
-                    <input type="text" class="form-control" name="username" required>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <i class="fas fa-envelope"></i>
+                <input type="email" class="form-control" name="email" id="email" 
+                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                       title="Please enter a valid email address" required>
+                <small class="error" id="emailError" style="color: red;"></small>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <i class="fas fa-envelope"></i>
-                    <input type="email" class="form-control" name="email" required>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <i class="fas fa-lock"></i>
+                <input type="password" class="form-control" name="password" id="password" 
+                       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+                       title="Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number" required>
+                <small class="error" id="passwordError" style="color: red;"></small>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <i class="fas fa-lock"></i>
-                    <input type="password" class="form-control" name="password" required>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Mobile Number</label>
+                <i class="fas fa-phone"></i>
+                <input type="text" class="form-control" name="mobno" id="mobno" 
+                       pattern="^[0-9]{10}$"
+                       title="Please enter a valid 10-digit mobile number" maxlength="10" required>
+                <small class="error" id="mobnoError" style="color: red;"></small>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Mobile Number</label>
-                    <i class="fas fa-phone"></i>
-                    <input type="text" class="form-control" name="mobno" maxlength="10" required>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Age</label>
+                <i class="fas fa-birthday-cake"></i>
+                <input type="number" class="form-control" name="age" id="age" 
+                       min="18" max="65"
+                       title="Age must be between 18 and 65" required>
+                <small class="error" id="ageError" style="color: red;"></small>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Age</label>
-                    <i class="fas fa-birthday-cake"></i>
-                    <input type="number" class="form-control" name="age" required>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Blood Group</label>
+                <i class="fas fa-tint"></i>
+                <select class="form-control" name="bg_id" id="bg_id" required>
+                    <option value="">Select Blood Group</option>
+                    {% for i in bg %}
+                        <option value="{{ i.id }}">{{ i.bloodgroup }}</option>
+                    {% endfor %}
+                </select>
+                <small class="error" id="bgError" style="color: red;"></small>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Blood Group</label>
-                    <i class="fas fa-tint"></i>
-                    <select class="form-control" name="bg_id" required>
-                        <option value="">Select Blood Group</option>
-                        {% for i in bg %}
-                            <option value="{{ i.id }}">{{ i.bloodgroup }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+            <div class="form-group">
+                <label class="form-label">Gender</label>
+                <i class="fas fa-venus-mars"></i>
+                <select class="form-control" name="gender" id="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <small class="error" id="genderError" style="color: red;"></small>
+            </div>
 
-                <div class="form-group">
-                    <label class="form-label">Gender</label>
-                    <i class="fas fa-venus-mars"></i>
-                    <select class="form-control" name="gender" required>
-                        <option value="">Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
+            <div class="form-group full-width">
+                <label class="form-label">Address</label>
+                <select class="form-control" name="district" id="district" required>
+                    <option value="" disabled selected>Select a district</option>
+                    <!-- District options remain the same -->
+                     <option value="" disabled selected>Select a district</option>
+        <option value="Kathmandu">Kathmandu</option>
+        <option value="Bhaktapur">Bhaktapur</option>
+        <option value="Lalitpur">Lalitpur</option>
+        <option value="Pokhara">Pokhara</option>
+        <option value="Chitwan">Chitwan</option>
+        <option value="Bajhang">Bajhang</option>
+        <option value="Saptari">Saptari</option>
+        <option value="Siraha">Siraha</option>
+        <option value="Morang">Morang</option>
+        <option value="Dhanusha">Dhanusha</option>
+        <option value="Mahottari">Mahottari</option>
+        <option value="Sindhuli">Sindhuli</option>
+        <option value="Rautahat">Rautahat</option>
+        <option value="Parsa">Parsa</option>
+        <option value="Bara">Bara</option>
+        <option value="Nawalparasi (East)">Nawalparasi (East)</option>
+        <option value="Nawalparasi (West)">Nawalparasi (West)</option>
+        <option value="Chitwan">Chitwan</option>
+        <option value="Makwanpur">Makwanpur</option>
+        <option value="Kavrepalanchok">Kavrepalanchok</option>
+        <option value="Sindhupalchok">Sindhupalchok</option>
+        <option value="Dolakha">Dolakha</option>
+        <option value="Ramechhap">Ramechhap</option>
+        <option value="Udayapur">Udayapur</option>
+        <option value="Sankhuwasabha">Sankhuwasabha</option>
+        <option value="Khotang">Khotang</option>
+        <option value="Okhaldhunga">Okhaldhunga</option>
+        <option value="Solukhumbu">Solukhumbu</option>
+        <option value="Rukum (East)">Rukum (East)</option>
+        <option value="Rukum (West)">Rukum (West)</option>
+        <option value="Arghakhanchi">Arghakhanchi</option>
+        <option value="Palpa">Palpa</option>
+        <option value="Nawalparasi">Nawalparasi</option>
+        <option value="Syangja">Syangja</option>
+        <option value="Tanahu">Tanahu</option>
+        <option value="Lamjung">Lamjung</option>
+        <option value="Gorkha">Gorkha</option>
+        <option value="Manang">Manang</option>
+        <option value="Mustang">Mustang</option>
+        <option value="Myagdi">Myagdi</option>
+        <option value="Baglung">Baglung</option>
+        <option value="Parbat">Parbat</option>
+        <option value="Kaski">Kaski</option>
+        <option value="Taplejung">Taplejung</option>
+        <option value="Ilam">Ilam</option>
+        <option value="Jhapa">Jhapa</option>
+        <option value="Panchthar">Panchthar</option>
+        <option value="Dhankuta">Dhankuta</option>
+        <option value="Bhojpur">Bhojpur</option>
+        <option value="Sunsari">Sunsari</option>
+        <option value="Terhathum">Terhathum</option>
+        <option value="Baitadi">Baitadi</option>
+        <option value="Dadeldhura">Dadeldhura</option>
+        <option value="Doti">Doti</option>
+        <option value="Achham">Achham</option>
+        <option value="Kailali">Kailali</option>
+        <option value="Kanchanpur">Kanchanpur</option>
+        <option value="Bajura">Bajura</option>
+        <option value="Bajhang">Bajhang</option>
+        <option value="Darchula">Darchula</option>
+        <option value="Rolpa">Rolpa</option>
+        <option value="Rukum">Rukum</option>
+        <option value="Pyuthan">Pyuthan</option>
+        <option value="Dang">Dang</option>
+        <option value="Banke">Banke</option>
+        <option value="Bardiya">Bardiya</option>
+        <option value="Surkhet">Surkhet</option>
+        <option value="Dailekh">Dailekh</option>
+        <option value="Jajarkot">Jajarkot</option>
+        <option value="Kalikot">Kalikot</option>
+        <option value="Achham">Achham</option>
+        <option value="Mugu">Mugu</option>
+        <option value="Humla">Humla</option>
+        <option value="Dolpa">Dolpa</option>
+        <option value="Salyan">Salyan</option>
+        <option value="Jumla">Jumla</option>
+    </select>
+</div>
 
-                <div class="form-group full-width">
-                    <label class="form-label">Address</label>
-                    <textarea class="form-control" name="address" rows="3" required></textarea>
-                </div>
+                <small class="error" id="districtError" style="color: red;"></small>
             </div>
 
             <button type="submit" class="register-btn">
@@ -335,7 +441,168 @@
                     Return to Home
                 </a>
             </div>
-        </form>
-    </div>
-</body>
-</html>
+        </div>
+    </form>
+</div>
+
+<script>
+function validateForm() {
+    let isValid = true;
+    
+    // Clear all previous error messages
+    document.querySelectorAll('.error').forEach(error => error.textContent = '');
+    
+    // Profile Picture validation
+    const pic = document.getElementById('pic');
+    if (pic.files.length > 0) {
+        const fileSize = pic.files[0].size / 1024 / 1024; // in MB
+        if (fileSize > 2) {
+            document.getElementById('picError').textContent = 'File size should be less than 2MB';
+            isValid = false;
+        }
+    }
+    
+    // First Name validation
+    const firstName = document.getElementById('first_name').value;
+    if (!/^[A-Za-z\s]{2,30}$/.test(firstName)) {
+        document.getElementById('firstNameError').textContent = 'Name should contain only letters and spaces (2-30 characters)';
+        isValid = false;
+    }
+    
+    // Last Name validation
+    const lastName = document.getElementById('last_name').value;
+    if (!/^[A-Za-z\s]{2,30}$/.test(lastName)) {
+        document.getElementById('lastNameError').textContent = 'Name should contain only letters and spaces (2-30 characters)';
+        isValid = false;
+    }
+    
+    // Username validation
+    const username = document.getElementById('username').value;
+    if (!/^[a-zA-Z0-9_]{4,20}$/.test(username)) {
+        document.getElementById('usernameError').textContent = 'Username should be 4-20 characters long and can contain letters, and numbers';
+        isValid = false;
+    }
+    
+    // Email validation
+    const email = document.getElementById('email').value;
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+        document.getElementById('emailError').textContent = 'Please enter a valid email address';
+        isValid = false;
+    }
+    
+    // Password validation
+    const password = document.getElementById('password').value;
+    if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) {
+        document.getElementById('passwordError').textContent = 'Password must be at least 8 characters long and contain at least one letter and one number';
+        isValid = false;
+    }
+    
+    // Mobile number validation
+    const mobile = document.getElementById('mobno').value;
+    if (!/^[0-9]{10}$/.test(mobile)) {
+        document.getElementById('mobnoError').textContent = 'Please enter a valid 10-digit mobile number';
+        isValid = false;
+    }
+    
+    // Age validation
+    const age = document.getElementById('age').value;
+    if (age < 18 || age > 65) {
+        document.getElementById('ageError').textContent = 'Age must be between 18 and 65';
+        isValid = false;
+    }
+    
+    // Blood Group validation
+    const bloodGroup = document.getElementById('bg_id').value;
+    if (!bloodGroup) {
+        document.getElementById('bgError').textContent = 'Please select a blood group';
+        isValid = false;
+    }
+    
+    // Gender validation
+    const gender = document.getElementById('gender').value;
+    if (!gender) {
+        document.getElementById('genderError').textContent = 'Please select a gender';
+        isValid = false;
+    }
+    
+    // District validation
+    const district = document.getElementById('district').value;
+    if (!district) {
+        document.getElementById('districtError').textContent = 'Please select a district';
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
+// Real-time validation
+document.getElementById('first_name').addEventListener('input', function() {
+    if (this.value.length > 0) {
+        if (!/^[A-Za-z\s]{2,30}$/.test(this.value)) {
+            document.getElementById('firstNameError').textContent = 'Name should contain only letters and spaces (2-30 characters)';
+        } else {
+            document.getElementById('firstNameError').textContent = '';
+        }
+    }
+});
+
+document.getElementById('last_name').addEventListener('input', function() {
+    if (this.value.length > 0) {
+        if (!/^[A-Za-z\s]{2,30}$/.test(this.value)) {
+            document.getElementById('lastNameError').textContent = 'Name should contain only letters and spaces (2-30 characters)';
+        } else {
+            document.getElementById('lastNameError').textContent = '';
+        }
+    }
+});
+
+document.getElementById('username').addEventListener('input', function() {
+    if (this.value.length > 0) {
+        if (!/^[a-zA-Z0-9_]{4,20}$/.test(this.value)) {
+            document.getElementById('usernameError').textContent = 'Username should be 4-20 characters long and can contain letters, numbers, and underscore';
+        } else {
+            document.getElementById('usernameError').textContent = '';
+        }
+    }
+});
+
+document.getElementById('email').addEventListener('input', function() {
+    if (this.value.length > 0) {
+        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(this.value)) {
+            document.getElementById('emailError').textContent = 'Please enter a valid email address';
+        } else {
+            document.getElementById('emailError').textContent = '';
+        }
+    }
+});
+
+document.getElementById('mobno').addEventListener('input', function() {
+    if (this.value.length > 0) {
+        if (!/^[0-9]{10}$/.test(this.value)) {
+            document.getElementById('mobnoError').textContent = 'Please enter a valid 10-digit mobile number';
+        } else {
+            document.getElementById('mobnoError').textContent = '';
+        }
+    }
+});
+
+document.getElementById('age').addEventListener('input', function() {
+    if (this.value.length > 0) {
+        if (this.value < 18 || this.value > 65) {
+            document.getElementById('ageError').textContent = 'Age must be between 18 and 65';
+        } else {
+            document.getElementById('ageError').textContent = '';
+        }
+    }
+});
+
+document.getElementById('password').addEventListener('input', function() {
+    if (this.value.length > 0) {
+        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(this.value)) {
+            document.getElementById('passwordError').textContent = 'Password must be at least 8 characters long and contain at least one letter and one number';
+        } else {
+            document.getElementById('passwordError').textContent = '';
+        }
+    }
+});
+</script>
