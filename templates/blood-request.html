@@ -7,49 +7,109 @@
       <div class="heading_container">
         <h2>
           Contact For Blood
-         
         </h2>
       </div>
       <div class="row">
         <div class="col-md-8">
             <p>Fill Following form for Blood</p>
           <div class="form_container contact-form">
-           
-            <form action="{% url 'blood-request-details' %}" method="POST">
+            <form id="bloodRequestForm" action="{% url 'blood-request-details' %}" method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="donor_id" value="{{donview.id}}" required="true"/>
               <div class="form-row">
                 <div class="col-lg-6">
                   <div>
-                    <input type="text" placeholder="Your Name" name="fullname" required="true"/>
-                  
+                    <input type="text" id="fullname" placeholder="Your Name" name="fullname" required="true"/>
+                    <small class="error-message" style="color: red; display: none;">Name must contain only letters</small>
                   </div>
                 </div>
                 <div class="col-lg-6">
                   <div>
-                    <input type="text" placeholder="Phone Number" name="mobno" required="true" maxlength="10" pattern="[0-9]+"/>
+                    <input type="text" id="mobno" placeholder="Phone Number" name="mobno" required="true" maxlength="10" pattern="[0-9]+"/>
+                    <small class="error-message" style="color: red; display: none;">Enter a valid 10-digit phone number</small>
                   </div>
                 </div>
               </div>
               <div>
-                <input type="email" placeholder="Email" name="email" required="true" />
+                <input type="email" id="email" placeholder="Email" name="email" required="true" />
+                <small class="error-message" style="color: red; display: none;">Enter a valid email address</small>
               </div>
               <div>
-                <input type="text" placeholder="Blood Required For" name="requirer"/>
+                <input type="text" id="requirer" placeholder="Blood Required For" name="requirer"/>
+                <small class="error-message" style="color: red; display: none;">This field cannot be empty</small>
               </div>
               <div>
-                <input type="text" class="message-box" placeholder="Message" name="message"/>
+                <input type="text" id="message" class="message-box" placeholder="Message" name="message"/>
+                <small class="error-message" style="color: red; display: none;">Message cannot exceed 250 characters</small>
               </div>
               <div class="btn_box">
-                <button>
+                <button type="submit">
                   SEND
                 </button>
               </div>
             </form>
           </div>
         </div>
-
       </div>
     </div>
   </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('bloodRequestForm');
+    
+    // Helper function to show or hide error messages
+    function validateInput(input, condition, errorMessage) {
+      const error = input.nextElementSibling;
+      if (condition) {
+        error.style.display = 'none';
+        input.style.borderColor = '';
+      } else {
+        error.textContent = errorMessage;
+        error.style.display = 'block';
+        input.style.borderColor = 'red';
+      }
+    }
+
+    // Add input event listeners for real-time validation
+    form.fullname.addEventListener('input', function () {
+      validateInput(this, /^[A-Za-z\s]+$/.test(this.value), 'Name must contain only letters');
+    });
+
+    form.mobno.addEventListener('input', function () {
+      validateInput(this, /^[0-9]{10}$/.test(this.value), 'Enter a valid 10-digit phone number');
+    });
+
+    form.email.addEventListener('input', function () {
+      validateInput(this, /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(this.value), 'Enter a valid email address');
+    });
+
+    form.requirer.addEventListener('input', function () {
+      validateInput(this, this.value.trim() !== '', 'This field cannot be empty');
+    });
+
+    form.message.addEventListener('input', function () {
+      validateInput(this, this.value.length <= 250, 'Message cannot exceed 250 characters');
+    });
+
+    // Validate on form submit
+    form.addEventListener('submit', function (e) {
+      const inputs = form.querySelectorAll('input');
+      let isValid = true;
+
+      inputs.forEach(input => {
+        const event = new Event('input');
+        input.dispatchEvent(event);
+        if (input.nextElementSibling.style.display === 'block') {
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        e.preventDefault();
+        alert('Please fix the errors in the form before submitting.');
+      }
+    });
+  });
+</script>
 {% endblock %}
