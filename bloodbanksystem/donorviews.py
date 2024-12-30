@@ -114,27 +114,34 @@ def DONORSIGNUP(request):
                 messages.error(request, 'Please select a gender')
                 return redirect('donorsignup')
 
+            address = request.POST.get('district')
+
+            # Validation for district/address should be:
+            if not address:
+                messages.error(request, 'District is required')
+                return redirect('donorsignup')
+
             # Address validation
             if not address.strip():
                 messages.error(request, 'Address is required')
                 return redirect('donorsignup')
 
-            # Password validation
-            if len(password) < 8:
-                messages.error(request, 'Password must be at least 8 characters long')
-                return redirect('donorsignup')
-            if not re.search("[A-Z]", password):
-                messages.error(request, 'Password must contain at least one uppercase letter')
-                return redirect('donorsignup')
-            if not re.search("[a-z]", password):
-                messages.error(request, 'Password must contain at least one lowercase letter')
-                return redirect('donorsignup')
-            if not re.search("[0-9]", password):
-                messages.error(request, 'Password must contain at least one number')
-                return redirect('donorsignup')
-            if not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
-                messages.error(request, 'Password must contain at least one special character')
-                return redirect('donorsignup')
+            # # Password validation
+            # if len(password) < 8:
+            #     messages.error(request, 'Password must be at least 8 characters long')
+            #     return redirect('donorsignup')
+            # if not re.search("[A-Z]", password):
+            #     messages.error(request, 'Password must contain at least one uppercase letter')
+            #     return redirect('donorsignup')
+            # if not re.search("[a-z]", password):
+            #     messages.error(request, 'Password must contain at least one lowercase letter')
+            #     return redirect('donorsignup')
+            # if not re.search("[0-9]", password):
+            #     messages.error(request, 'Password must contain at least one number')
+            #     return redirect('donorsignup')
+            # if not re.search("[!@#$%^&*(),.?\":{}|<>]", password):
+            #     messages.error(request, 'Password must contain at least one special character')
+            #     return redirect('donorsignup')
 
             # Check existing email/username
             if CustomUser.objects.filter(email=email).exists():
