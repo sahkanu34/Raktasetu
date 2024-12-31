@@ -1,22 +1,16 @@
-# Use slim variant of Python image to reduce base image size
 FROM python:3.8-slim
 
-ENV PYTHONUNBUFFERED=1
-
-# Set work directory
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y \
+    default-libmysqlclient-dev \
+    pkg-config \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
 RUN pip install --upgrade pip
-
-
-COPY . /requirements.txt
-
-#pip install mysqlclient pillow
+RUN pip install -r requirements.txt
 
 COPY . .
-
-# Expose port
-EXPOSE 8000:8000
-
-# Command to run the application
-CMD ["python", "manage.py", "runserver"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

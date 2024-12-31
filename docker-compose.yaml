@@ -1,6 +1,38 @@
+version: '3.8'
+
 services:
-  django:
-    image: django-web.app
+  web:
     build: .
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - MYSQL_NAME=bbdmspythondb
+      - MYSQL_USER=newuser
+      - MYSQL_PASSWORD=1234
+      - MYSQL_HOST=db
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=bbdmspythondb
+      - MYSQL_USER=newuser
+      - MYSQL_PASSWORD=1234
+      - MYSQL_ROOT_PASSWORD=1234
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      interval: 5s
+
+volumes:
+  mysql_data:
