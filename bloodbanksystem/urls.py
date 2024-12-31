@@ -66,3 +66,4 @@ urlpatterns = [
     path('user/SearchDonor', userviews.SEARCHDONOR, name="search-donor"),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+ 
