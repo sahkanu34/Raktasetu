@@ -83,8 +83,9 @@ Raktasetu is an online web application designed to connect blood donors with rec
    python manage.py runserver
    ```
 7. Access the application at:
-
----
+   ```bash
+   localhost:8000
+   ```
 
 ## Usage
 
