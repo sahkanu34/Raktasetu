@@ -1,0 +1,5 @@
+{
+    "yaml.schemas": {
+        "kubernetes://schema/v1%40service": "file:///d%3A/BLood-Bank-Donor-MS-Python-Django/bbdms/bloodbanksystem/kubernetes-deployment.yml"
+    }
+}
